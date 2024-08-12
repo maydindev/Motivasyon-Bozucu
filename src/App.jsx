@@ -1,20 +1,20 @@
-import './styles.css'
-import { useState, useEffect } from 'react'
-import showState from './utilities/showState'
-import NextQuoteButton from './components/NextQuoteButton'
-import imageData from './data/imageData'
-import quoteData from './data/quoteData'
+import "./styles.css";
+import { useState, useEffect } from "react";
+import showState from "./utilities/showState";
+import NextQuoteButton from "./components/NextQuoteButton";
+import imageData from "./data/imageData";
+import quoteData from "./data/quoteData";
 
 export default function App() {
-  const [currentData, setCurrentData] = useState(null)
+  const [currentData, setCurrentData] = useState(null);
 
   useEffect(() => {
-    hydrateData()
-  }, [])
+    hydrateData();
+  }, []);
 
   function hydrateData() {
     if (!currentData) {
-      setCurrentData(getNextData())
+      setCurrentData(getNextData());
     }
   }
 
@@ -22,28 +22,28 @@ export default function App() {
     return {
       text: getRandomItem(quoteData),
       image: getRandomItem(imageData),
-    }
+    };
   }
 
   function getRandomItem(targetObject) {
-    checkArray(targetObject)
-    const targetArray = targetObject.availableItems
-    const length = targetArray.length
-    const randomIndex = Math.floor(Math.random() * length)
-    const targetItem = targetArray[randomIndex]
-    targetArray.splice(randomIndex, 1)
-    targetObject.usedItems.push(targetItem)
-    return targetItem
+    checkArray(targetObject);
+    const targetArray = targetObject.availableItems;
+    const length = targetArray.length;
+    const randomIndex = Math.floor(Math.random() * length);
+    const targetItem = targetArray[randomIndex];
+    targetArray.splice(randomIndex, 1);
+    targetObject.usedItems.push(targetItem);
+    return targetItem;
   }
 
   function getNextQuote() {
-    setCurrentData(getNextData())
+    setCurrentData(getNextData());
   }
 
   function checkArray(targetObject) {
     if (targetObject.availableItems.length === 0) {
-      targetObject.availableItems = [...targetObject.usedItems]
-      targetObject.usedItems = []
+      targetObject.availableItems = [...targetObject.usedItems];
+      targetObject.usedItems = [];
     }
   }
 
@@ -69,25 +69,25 @@ export default function App() {
 */
 
   function getSmallestFontSize(fontObjectOne, fontObjectTwo) {
-    const fontSizeOneString = fontObjectOne && fontObjectOne.fontSize
-    const fontSizeTwoString = fontObjectTwo && fontObjectTwo.fontSize
+    const fontSizeOneString = fontObjectOne && fontObjectOne.fontSize;
+    const fontSizeTwoString = fontObjectTwo && fontObjectTwo.fontSize;
 
     if (!fontSizeOneString && !fontSizeTwoString) {
-      return undefined
+      return undefined;
     } else if (fontSizeOneString && !fontSizeTwoString) {
-      return fontObjectOne
+      return fontObjectOne;
     } else if (!fontSizeOneString && fontSizeTwoString) {
-      return fontObjectTwo
+      return fontObjectTwo;
     }
 
-    const fontSizeOneNum = getNumber(fontSizeOneString)
-    const fontSizeTwoNum = getNumber(fontSizeTwoString)
+    const fontSizeOneNum = getNumber(fontSizeOneString);
+    const fontSizeTwoNum = getNumber(fontSizeTwoString);
 
     function getNumber(fontSizeString) {
-      return +fontSizeString.slice(0, -2)
+      return +fontSizeString.slice(0, -2);
     }
 
-    return fontSizeOneNum < fontSizeTwoNum ? fontObjectOne : fontObjectTwo
+    return fontSizeOneNum < fontSizeTwoNum ? fontObjectOne : fontObjectTwo;
   }
   /* Challenge 
         
@@ -102,17 +102,19 @@ export default function App() {
      İpucu: currentData state'ini görmek ve içeriğine ve yapısına alışmak için bu bileşenin üst seviyesinde herhangi bir yerde showState(currentData) komutunu çağırın. 
 */
 
+showState(currentData)
+
   return (
-    <div className='wrapper'>
+    <div className="wrapper" style={currentData.image.wrapperStyles}>
       {currentData && (
-        <div className='quote-container'>
-          <p className='quote'>
+        <div className="quote-container" style={currentData.image.containerStyles}>
+          <p className="quote" style={getSmallestFontSize(currentData.image.quoteFontSize,currentData.text.quoteFontSize)}>
             {currentData.text.fakeQuote}
-            <span className='source'>-{currentData.text.fakeSource}</span>
+            <span className="source">-{currentData.text.fakeSource}</span>
           </p>
         </div>
       )}
       <NextQuoteButton clickHandler={getNextQuote} />
     </div>
-  )
+  );
 }
