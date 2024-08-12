@@ -102,10 +102,10 @@ export default function App() {
      İpucu: currentData state'ini görmek ve içeriğine ve yapısına alışmak için bu bileşenin üst seviyesinde herhangi bir yerde showState(currentData) komutunu çağırın. 
 */
 
-showState(currentData)
+//showState(currentData)
 
   return (
-    <div className="wrapper" style={currentData.image.wrapperStyles}>
+    <div className="wrapper" style={currentData?.image.wrapperStyles}>
       {currentData && (
         <div className="quote-container" style={currentData.image.containerStyles}>
           <p className="quote" style={getSmallestFontSize(currentData.image.quoteFontSize,currentData.text.quoteFontSize)}>
